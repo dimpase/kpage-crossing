@@ -59,17 +59,6 @@ def crkmat(n,k):
    g = gadgets(n,k)
    return g,[[crk(a, b) for b in g] for a in g]
   
-def crkprt(n,fn):
-    f = file(fn,"w")
-    olens,a,b=cr2mat(n)
-    f.write("gadgets=\n")
-    f.write(str(a))
-    f.write("\n matrix=\n")
-    f.write(str(b))
-    f.write("\n blocksizes=\n")
-    f.write(str(olens))
-    f.close()
-
 def permmat(p):
    n = len(p)
    def delt(i,j):
@@ -83,4 +72,19 @@ def testM(n,k): # test that we have symmetries we should have
    g,M=crkmat(n,k)
    m=matrix(M)
    return [m*permmat(p)==permmat(p)*m for p in ggens(g,k)]
+
+############# output ###########
+load orbitals.sage
+def crkprt(n,k,fn):
+    f = file(fn,"w")
+    g,M=crkmat(n,k)
+    oo=orbitals(ggens(g,k), result="raw")
+    f.write(str(M))
+    f.write("\n")
+    f.write(str(oo))
+    f.write("\n")
+    f.write(str(g))
+    f.write("\n")
+    f.close()
+
    
