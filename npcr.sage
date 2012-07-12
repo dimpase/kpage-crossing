@@ -76,28 +76,11 @@ def crk(a,b,k):
       return min(sum([crcount(i,   s, i+1, q) for s, q in z]), 
                  sum([crcount(i+1,   s, i, q) for s, q in z])) 
 
-# we assume here that j is to the left from i (when i=j)
-# there are 2 types of possible crossings of ir and jt
-#  a) i<t<r<j, where '<' has the usual meaning
-#  b) j<r<t<i, where '<' means the order in the segment (j,j+1,...,n-1,0,1,...,i)
-# there a a BUG here!!!!! So we will not use this function
-def crk0(i,q,j,s): 
-   n = len(s)
-   c = 0 # of crossings
-   for t in [i+1..j-2]: # type a)
-     for r in [t+1..j-1]:
-        if s[r] == q[t]: c+=1
-   for r in [j+1..i+n-2]: # type b)
-     for t in [r+1..i+n-1]:
-        if s[r % n] == q[t % n]: c+=1
-   return c   
-
 def crcount(i,s,j,q):
 #   print i, " ", s, " ", j, " ", q, "\n"
    c = 0
    for x in s:
      for y in q:
-#       print i, j, x, y, "\n"
        if i<j<x<y or j<x<y<i or x<y<i<j or y<i<j<x or \
           i<y<x<j or y<x<j<i or x<j<i<y or j<i<y<x: 
          c += 1
@@ -120,7 +103,6 @@ def testM(n,k): # test that we have symmetries we should have
    g,M=crkmat(n,k)
    m=matrix(M)
    return [m*permmat(p)==permmat(p)*m for p in ggens(g,k)]
-#   return [(m*permmat(p)==permmat(p)*m,p,permmat(p)) for p in ggens(g,k)]
 
 ############# output ###########
 load orbitals.sage
