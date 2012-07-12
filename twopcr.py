@@ -94,7 +94,7 @@ def cr2(n,a,b):
 
 # helper functions
 def sca(s): return [3*x for x in s]  # scaling
-
+ 
 def crcount(i,s,j,q):
 #   print i, " ", s, " ", j, " ", q, "\n"
    c = 0
@@ -115,13 +115,15 @@ def permmat(p):
          return 0
    return matrix(QQ, n, n, lambda i, j: delt(p[j],i), sparse=True)
 
-def cr2mat(n):
+def cr2mat(n, raw = False):
    olens,g = c_ord(n,gadgets(n))
    reps = []
    pos = 0
    for x in olens:
       reps.append(g[pos])
       pos = pos + x
+   if raw:
+      reps = g
    return olens,g,[[cr2(n, a, b) for b in g] for a in reps]
   
 def cr2prt(n,fn):
