@@ -3,14 +3,23 @@
 def orbitals(G, result="comp", pairing=False):
   n = len(G[0])
   O = [[(i,j) for j in xrange(n)] for i in xrange(n)]
-
-  for i in xrange(n): 
+  O0 = []
+  while O0 != O:
+   O0 = copy(O)
+   for i in xrange(n): 
     for j in xrange(n):
       for g in G:
         s, t = g[i], g[j]
         # this does not preserve the natural pairing
         m = min(O[i][j], O[s][t])
-        O[i][j], O[s][t] = m, m
+# the following does not suffice:
+#        O[i][j], O[s][t] = m, m
+# one needs to merge the whole classes! E.g. as follows (slow!):
+        for p in xrange(n): 
+          for q in xrange(n):
+             if O[p][q] in [O[i][j], O[s][t]]:
+                O[p][q] = m
+        
   if result == "raw":
      return O
   d = [] 
@@ -28,6 +37,17 @@ def orbitals(G, result="comp", pairing=False):
      return d 
 #  return [[O[i][j][0]*n+O[i][j][1] for j in range(n)] for i in range(n)]
 
+def orbmats(G): # mainly for testing purposes
+  oo=orbitals(G, result="raw")
+  rep=list(set(flatten(oo,max_level=1)))
+  n=len(G[0])
+  A=[zero_matrix(n,n,sparse=True) for i in xrange(len(rep))]
+  for k in xrange(len(rep)):
+      for i in xrange(n):
+          for j in xrange(n):
+              A[rep.index(oo[i][j])][i,j]=1
+  return A
+ 
 # find the coefficients of expression of a sum of orbitals          
 def mexpress(M,O,test=False):
   r = dict()
