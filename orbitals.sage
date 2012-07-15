@@ -40,26 +40,14 @@ def orbmats(G): # for testing purposes
           for j in xrange(n):
               A[rep.index(oo[i][j])][i,j]=1
   return A
- 
-# find the coefficients of expression of a sum of orbitals          
-def mexpress(M,O,test=False):
-  r = dict()
-  if test==True:
-    n = len(M[0])
-    for i in xrange(n):
-      for j in xrange(n):
-        o = O[i][j]
-        if o==(i,j):
-          if M[i][j] != 0:
-             r[(i,j)] = M[i][j]
-        else:
-          if M[i][j]!=M[o[0]][o[1]]:
-             return False,i,j
-    return r
-  else:
-    for i,j in O:
-      if M[i][j] != 0:
-        r[(i,j)] = M[i][j]
-    return r
-    
-    
+
+def printorbitals(d,f):
+  keys = sorted(d.keys())
+  f.write(str(len(keys))+'\n')
+  for i in keys:
+    f.write(" "+str(len(d[i])))
+  f.write('\n')
+  for i in keys:
+    for p,q in sorted(d[i]):
+      f.write(str(p)+' '+str(q)+'\n')
+

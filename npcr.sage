@@ -106,16 +106,47 @@ def testM(n,k): # test that we have symmetries we should have
 
 ############# output ###########
 load orbitals.sage
+
+# find the coefficients of expression of a sum of orbitals          
+def mexpress(M,O,test=False):
+  r = dict()
+  if test==True:
+    n = len(M[0])
+    for i in xrange(n):
+      for j in xrange(n):
+        o = O[i][j]
+        if o==(i,j):
+          if M[i][j] != 0:
+             r[(i,j)] = M[i][j]
+        else:
+          if M[i][j]!=M[o[0]][o[1]]:
+             return False,i,j
+    return r
+  else:
+    for i,j in O:
+      if M[i][j] != 0:
+        r[(i,j)] = M[i][j]
+    return r
+    
+    
 def crkprt(n,k,fn):
     f = file(fn,"w")
     g,M=crkmat(n,k)
-    oo=orbitals(ggens(g,k), result="raw")
-    f.write(str(M))
-    f.write("\n")
-    f.write(str(oo))
-    f.write("\n")
-    f.write(str(g))
-    f.write("\n")
+    oo=orbitals(ggens(g,k), result="c") #"raw")
+#    f.write(str(M))
+    f.write(str(len(M))+"\n")
+    printorbitals(oo[1],f)
+    keys=sorted(oo[1].keys())
+    e = mexpress(M,keys)
+#    print sorted(e.keys())
+    f.write(str(len(e.keys()))+'\n')
+    for i in sorted(e.keys()):
+       f.write(str(keys.index(i))+" "+str(e[i])+'\n')
     f.close()
+#    f.write(str(oo))
+#    f.write("\n")
+#    f.write(str(g))
+#    f.write("\n")
+#    f.close()
 
    
