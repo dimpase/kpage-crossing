@@ -131,18 +131,20 @@ def mexpress(M,O,test=False):
     
 def crkprt(n,k,fn):
     f = file(fn,"w")
+    f2 = file(fn+"_2","w")
     g,M=crkmat(n,k)
     oo=orbitals(ggens(g,k), result="c") #"raw")
 #    f.write(str(M))
     f.write(str(len(M))+"\n")
-    printorbitals(oo[1],f)
+    printorbitals(oo[1],oo[2],f,f2)
     keys=sorted(oo[1].keys())
     e = mexpress(M,keys)
 #    print sorted(e.keys())
     f.write(str(len(e.keys()))+'\n')
     for i in sorted(e.keys()):
-       f.write(str(keys.index(i))+" "+str(e[i])+'\n')
+       f.write(str(1+keys.index(i))+" "+str(e[i])+'\n')
     f.close()
+    f2.close()
 #    f.write(str(oo))
 #    f.write("\n")
 #    f.write(str(g))

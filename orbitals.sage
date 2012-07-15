@@ -41,13 +41,16 @@ def orbmats(G): # for testing purposes
               A[rep.index(oo[i][j])][i,j]=1
   return A
 
-def printorbitals(d,f):
+def printorbitals(d,pairing,f,f2):
   keys = sorted(d.keys())
   f.write(str(len(keys))+'\n')
+  for i in keys:
+    f.write(" "+str(1+keys.index(pairing[i])))
+  f.write('\n')
   for i in keys:
     f.write(" "+str(len(d[i])))
   f.write('\n')
   for i in keys:
     for p,q in sorted(d[i]):
-      f.write(str(p)+' '+str(q)+'\n')
+      f2.write(str(1+p)+' '+str(1+q)+' ;...\n')
 
